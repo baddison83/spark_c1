@@ -16,7 +16,8 @@ wordCounts = words.countByValue()
 # For loop for printing the word and the count
 for word, count in wordCounts.items():
 
-    # I'm not sure what the encode function does here
+    # For each word encode as ascii. If there's an error, ignore it
     cleanWord = word.encode('ascii', 'ignore')
     if (cleanWord):
+        # print the decoded cleanWord and the cnt of times it appears
         print(cleanWord.decode() + " " + str(count))
