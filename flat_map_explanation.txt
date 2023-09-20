@@ -1,0 +1,35 @@
+conf = SparkConf().setMaster("local").setAppName("WordCount")
+sc = SparkContext(conf=conf)
+
+inputt = sc.textFile("file:///sparkcourse/book.txt")
+
+def normalize_words(text):
+    return re.compile(r'\W+', re.UNICODE).split(text.lower())
+
+words = inputt.flatMap(lambda x: x.split())
+words2 = inputt.flatMap(normalize_words)
+
+words.take(10) results in:
+['Self-Employment:',
+ 'Building',
+ 'an',
+ 'Internet',
+ 'Business',
+ 'of',
+ 'One',
+ 'Achieving',
+ 'Financial',
+ 'and']
+
+ words2.take(10) results in:
+ ['self',
+ 'employment',
+ 'building',
+ 'an',
+ 'internet',
+ 'business',
+ 'of',
+ 'one',
+ 'achieving',
+ 'financial']
+ # so everything is lowercased and normalize_words got rid of the hyphen
