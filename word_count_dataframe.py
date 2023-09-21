@@ -18,9 +18,12 @@ inputDF = spark.read.text("book.txt")
 spark = SparkSession.builder.appName("WordCount").getOrCreate()
 
 # Read each line of my book into a dataframe
-inputDF = spark.read.text("file:///SparkCourse/book.txt")
+inputDF = spark.read.text("book.txt")
 
-# Split using a regular expression that extracts words
+"""
+func.split will split each line into individual words
+func.explode will make one line per word
+"""
 words = inputDF.select(func.explode(func.split(inputDF.value, "\\W+")).alias("word"))
 wordsWithoutEmptyString = words.filter(words.word != "")
 
@@ -31,7 +34,7 @@ lowercaseWords = wordsWithoutEmptyString.select(func.lower(wordsWithoutEmptyStri
 wordCounts = lowercaseWords.groupBy("word").count()
 
 # Sort by counts
-wordCountsSorted = wordCounts.sort("count")
+wordCountsSorted = wordCounts.sort("count", ascending=False)
 
 # Show the results.
 wordCountsSorted.show(wordCountsSorted.count())
